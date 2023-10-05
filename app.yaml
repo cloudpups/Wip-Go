@@ -1,0 +1,14 @@
+default_events:
+  - pull_request
+
+default_permissions:
+  checks: write
+  metadata: read
+  pull_requests: read
+  single_file: read
+
+single_file_name: .github/wip.yml
+
+name: WIP-go Bot
+
+description: \"DO NOT MERGE ❌\" - as a service!

@@ -17,6 +17,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"strings"
 
 	"github.com/google/go-github/v55/github"
 	"github.com/palantir/go-githubapp/githubapp"
@@ -65,11 +66,13 @@ func (h *PRStatusHandler) Handle(ctx context.Context, eventType, deliveryID stri
 
 	labels := event.GetPullRequest().Labels
 
-	labelsToFailOn := []string{"do-not-merge"}
+	// TODO: make configurable
+	// TODO: make sure to create a new array that makes the labelsToFailOn lowercase!!
+	labelsToFailOn := []string{"dnm", "do not merge", "do-not-merge", "wip", "work in progress", "work-in-progress"}
 
 	for _, l := range labels {
 		name := l.Name
-		markAsFailure := slices.Contains(labelsToFailOn, *name)
+		markAsFailure := slices.Contains(labelsToFailOn, strings.ToLower(*name))
 
 		if markAsFailure {
 			conclusion = "failure"

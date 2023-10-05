@@ -6,7 +6,7 @@ A GitHub App for Do-Not-Merge and Work-In-Progress functionality! (...which is d
 
 ## What does this do?
 
-Do you have a pull request that is not a draft, has passed review, and yet for some reason it **still** should not be merged? Look no further, the WIP-go bot is here for you! Use the default labels supported by this bot (`WIP`, `DO-NOT-MERGE`, `DNM`, `DO NOT MERGE`), or supply a list of up to 15 custom labels for this bot to recognize (**not** case-sensitive)!
+Do you have a pull request that is not a draft, has passed review, and yet for some reason it **still** should not be merged? Look no further, the WIP-go bot is here for you! Use the default labels supported by this bot (`"dnm", "do not merge", "do-not-merge", "wip", "work in progress", "work-in-progress"`), or supply a list of up to 15 custom labels for this bot to recognize (**not** case-sensitive)!
 
 Whenever such a label is added to a pull request, this bot will add a failing status check. If this status check is `required` via branch protections, then that pull request will be blocked from being merged (baring no admin overrides, of course)!
 

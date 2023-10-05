@@ -1,8 +1,14 @@
-# wip-go
+<div align="center">
+
+# WIP-go
+
+A GitHub App for Do-Not-Merge and Work-In-Progress functionality! (...which is different than Draft PRs)
 
 🚧 This is a work in progress!!
 
-A GitHub App for Do-Not-Merge and Work-In-Progress functionality! (...which is different than Draft PRs)
+[![MediumLink](https://img.shields.io/badge/Read%20about%20me%20on%20-Medium-lightgrey?style=flat-square)][medium]
+
+</div>
 
 ## What does this do?
 
@@ -75,3 +81,4 @@ smee --url https://smee.io/SomeRandomValues --target http://127.0.0.1:8080/api/g
     * ❗ **IMPORTANT** you MUST update your GitHub App registration so that the `Webhook URL` property is pointing towards this URL. Otherwise the events will never make it to your app! Again- do not use Smee.io for production use cases.
 * `target` is the URL (including protocol, port, and path) for your event handling endpoint.
 
+[medium]: https://example.com

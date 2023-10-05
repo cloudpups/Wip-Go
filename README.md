@@ -6,7 +6,7 @@ A GitHub App for Do-Not-Merge and Work-In-Progress functionality! (...which is d
 
 🚧 This is a work in progress!!
 
-[![MediumLink](https://img.shields.io/badge/Read%20about%20me%20on%20-Medium-lightgrey?style=flat-square)][medium]
+[![MediumLink](https://img.shields.io/badge/Read%20about%20me%20on%20-Medium-lightgrey?style=flat-square)][medium] [![CodeQL](https://github.com/cloudpups/Wip-Go/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/cloudpups/Wip-Go/actions/workflows/github-code-scanning/codeql)
 
 </div>
 

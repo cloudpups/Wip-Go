@@ -44,9 +44,11 @@ func (h *PRStatusHandler) Handle(ctx context.Context, eventType, deliveryID stri
 	repo := event.GetRepo()
 	prNum := event.GetPullRequest().GetNumber()
 	sha := event.GetPullRequest().GetHead().SHA
-	installationID := githubapp.GetInstallationIDFromEvent(&event)
 
+	// Requires Palantir --> must seperate
+	installationID := githubapp.GetInstallationIDFromEvent(&event)
 	_, logger := githubapp.PreparePRContext(ctx, installationID, repo, prNum)
+	//
 
 	logger.Debug().Msgf("Event action is %s", event.GetAction())
 
@@ -55,7 +57,10 @@ func (h *PRStatusHandler) Handle(ctx context.Context, eventType, deliveryID stri
 		return nil
 	}
 
+	// Requires Palantir --> must seperate
 	client, err := h.NewInstallationClient(installationID)
+	//
+
 	if err != nil {
 		return err
 	}

@@ -1,6 +1,7 @@
 package vercel
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -25,6 +26,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	event = event.(github.PullRequestEvent)
+	castEvent := event.(*github.PullRequestEvent)
 
+	text := fmt.Sprintf("<h1>The Action was %s</h1>", *castEvent.Action)
+
+	fmt.Fprintf(w, text)
 }

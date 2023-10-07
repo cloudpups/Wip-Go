@@ -6,7 +6,10 @@ For more information, check out this link: https://vercel.com/docs/functions/ser
 
 ## Vercel Hook
 
-`vercel_hook.go` is served at the following address: https://wip.cloudpups.dev/api/vercel_hook
+`vercel_hook.go` is served at the following addresses
+
+* Production: https://wip.cloudpups.dev/api/vercel_hook
+* Non-Production: https://nonprod.wip.cloudpups.dev/api/vercel_hook
 
 ## Necessary Environment Variables
 

@@ -17,6 +17,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/google/go-github/v55/github"
@@ -65,9 +66,10 @@ func (h *PRStatusHandler) Handle(ctx context.Context, eventType, deliveryID stri
 		return err
 	}
 
+	// TODO: allow name to be configurable so as to account for existing Required Status checks
 	name := "WIP"
 	conclusion := "success" // "success" or "failure"
-	status := "completed"
+	description := "No blocking labels detected!"
 
 	labels := event.GetPullRequest().Labels
 
@@ -81,17 +83,17 @@ func (h *PRStatusHandler) Handle(ctx context.Context, eventType, deliveryID stri
 
 		if markAsFailure {
 			conclusion = "failure"
+			description = fmt.Sprintf("A blocking label was detected: %s", *name)
 			break // No need to continue checking, we found a label that should block the PR!
 		}
 	}
 
-	if _, _, err := client.Checks.CreateCheckRun(ctx, *owner.Login, *repo.Name, github.CreateCheckRunOptions{
-		Conclusion: &conclusion,
-		Name:       name,
-		Status:     &status,
-		HeadSHA:    *sha,
+	if _, _, err := client.Repositories.CreateStatus(ctx, *owner.Login, *repo.Name, *sha, &github.RepoStatus{
+		State:       &conclusion,
+		Description: &description,
+		Context:     &name,
 	}); err != nil {
-		logger.Error().Err(err).Msg("Failed to comment on pull request")
+		logger.Error().Err(err).Msg("Failed to create status check")
 	}
 
 	return nil

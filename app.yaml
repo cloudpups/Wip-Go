@@ -1,14 +1,14 @@
 default_events:
   - pull_request
 
-default_permissions:
-  checks: write
+default_permissions:  
   metadata: read
   pull_requests: read
-  single_file: read
+  commit_statuses: write
+
 
 single_file_name: .github/wip.yml
 
-name: WIP-go Bot
+name: WIP-go
 
 description: \"DO NOT MERGE ❌\" - as a service!

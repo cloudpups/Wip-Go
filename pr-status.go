@@ -41,22 +41,9 @@ func (h *PRStatusHandler) Handle(ctx context.Context, eventType, deliveryID stri
 		return errors.Wrap(err, "failed to parse pull request event payload")
 	}
 
-	owner := event.GetOrganization()
-	repo := event.GetRepo()
-	prNum := event.GetPullRequest().GetNumber()
-	sha := event.GetPullRequest().GetHead().SHA
-
 	// Requires Palantir --> must seperate
 	installationID := githubapp.GetInstallationIDFromEvent(&event)
-	_, logger := githubapp.PreparePRContext(ctx, installationID, repo, prNum)
 	//
-
-	logger.Debug().Msgf("Event action is %s", event.GetAction())
-
-	if !(*event.Action == "labeled" || *event.Action == "unlabeled") {
-		logger.Debug().Msgf("Event action is %s, which can be ignored.", event.GetAction())
-		return nil
-	}
 
 	// Requires Palantir --> must seperate
 	client, err := h.NewInstallationClient(installationID)
@@ -65,17 +52,6 @@ func (h *PRStatusHandler) Handle(ctx context.Context, eventType, deliveryID stri
 	if err != nil {
 		return err
 	}
-
-	// TODO: allow name to be configurable so as to account for existing Required Status checks
-	name := "WIP"
-	conclusion := "success" // "success" or "failure"
-	description := "No blocking labels detected!"
-
-	labels := event.GetPullRequest().Labels
-
-	// TODO: make configurable
-	// TODO: make sure to create a new array that makes the labelsToFailOn lowercase!!
-	labelsToFailOn := []string{"dnm", "do not merge", "do-not-merge", "wip", "work in progress", "work-in-progress"}
 
 	for _, l := range labels {
 		name := l.Name
@@ -96,5 +72,51 @@ func (h *PRStatusHandler) Handle(ctx context.Context, eventType, deliveryID stri
 		logger.Error().Err(err).Msg("Failed to create status check")
 	}
 
+	var wrapperFunc = func(ctx context.Context, ownerLogin string, repoName string, ref string, status *github.RepoStatus) *error {
+		_, _, err := client.Repositories.CreateStatus(ctx, ownerLogin, repoName, ref, &github.RepoStatus{
+			State:       &conclusion,
+			Description: &description,
+			Context:     &name,
+		})
+
+		return &err
+	}
+
+	CreateStatus(wrapperFunc, ctx, *owner.Login, *repo.Name, *sha, &github.RepoStatus{
+		State:       &conclusion,
+		Description: &description,
+		Context:     &name,
+	})
+
 	return nil
+}
+
+type StatusCreator func(ctx context.Context, owner string, repo string, ref string, status *github.RepoStatus) *error
+
+func CreateStatus(creator StatusCreator, ctx context.Context, login string, name string, sha string, status *github.RepoStatus) (*github.RepoStatus, error) {
+	return creator(ctx, login, name, sha, status)
+}
+
+func handlePrLabelEvent(statusCreator StatusCreator, event github.PullRequestEvent) {
+	owner := event.GetOrganization()
+	repo := event.GetRepo()
+	prNum := event.GetPullRequest().GetNumber()
+	sha := event.GetPullRequest().GetHead().SHA
+	installationId := event.Installation.ID
+
+	if !(*event.Action == "labeled" || *event.Action == "unlabeled") {
+		// logger.Debug().Msgf("Event action is %s, which can be ignored.", event.GetAction())
+		return
+	}
+
+	// TODO: allow name to be configurable so as to account for existing Required Status checks
+	name := "WIP"
+	conclusion := "success" // "success" or "failure"
+	description := "No blocking labels detected!"
+
+	labels := event.GetPullRequest().Labels
+
+	// TODO: make configurable
+	// TODO: make sure to create a new array that makes the labelsToFailOn lowercase!!
+	labelsToFailOn := []string{"dnm", "do not merge", "do-not-merge", "wip", "work in progress", "work-in-progress"}
 }

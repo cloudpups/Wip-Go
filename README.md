@@ -53,7 +53,7 @@ github:
       -----END RSA PRIVATE KEY-----
 ```
 
-🔍 Note: all configurable options and their corresponding documentation can be found in the [app config file](./config/app.go).
+🔍 Note: all configurable options and their corresponding documentation can be found in the [app config file](./app.go).
 
 ### Starting the app
 

@@ -10,6 +10,10 @@ A GitHub App for Do-Not-Merge and Work-In-Progress functionality! (...which is d
 
 </div>
 
+> **❗ For those following the [Medium Article][medium]**
+> 
+> If you are coming here from the [Medium article][medium], note that you should use the source from the [Source for Medium Article](https://github.com/cloudpups/Wip-Go/releases/tag/medium_article) Release to minimize any issues. The app, and the permissions it requires, has changed since it was first written.
+
 ## What does this do?
 
 Do you have a pull request that is not a draft, has passed review, and yet for some reason it **still** should not be merged? Look no further, the WIP-go bot is here for you! Use the default labels supported by this bot (`"dnm", "do not merge", "do-not-merge", "wip", "work in progress", "work-in-progress"`), or supply a list of up to 15 custom labels for this bot to recognize (**not** case-sensitive)!

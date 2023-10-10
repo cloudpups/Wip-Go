@@ -38,7 +38,9 @@ To keep things simple, let's stick with using the `config.yaml` file:
 
 ```yaml
 # This is all the configuration needed to run this bot!
-github:    
+github:
+  # While this should NOT be required, it makes for easier following of the Medium article!
+  v3_api_url: "https://api.github.com/"    
   app:
     # Note: integration_id is referring to the App ID of your GitHub App Registration
     integration_id: 000000
